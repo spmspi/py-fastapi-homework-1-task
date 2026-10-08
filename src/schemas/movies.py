@@ -19,17 +19,7 @@ class MovieDetailResponseSchema(BaseModel):
     country: str
 
 
-class MovieListResponseSchema(MovieDetailResponseSchema):
-    pass
-
-
-class Movie(MovieListResponseSchema):
-    model_config = ConfigDict(from_attributes=True)
-
-    id: int
-
-
-class MoviePaginatedResponseSchema(BaseModel):
+class MovieListResponseSchema(BaseModel):
     movies: list[MovieDetailResponseSchema]
     prev_page: str | None
     next_page: str | None
@@ -37,3 +27,9 @@ class MoviePaginatedResponseSchema(BaseModel):
     total_items: int
 
     model_config = ConfigDict(from_attributes=True)
+
+
+class Movie(MovieListResponseSchema):
+    model_config = ConfigDict(from_attributes=True)
+
+    id: int

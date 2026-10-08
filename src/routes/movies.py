@@ -5,12 +5,12 @@ from typing import Annotated
 from starlette import status
 from database import get_db, MovieModel
 from schemas import MovieDetailResponseSchema
-from schemas.movies import MoviePaginatedResponseSchema
+from schemas.movies import MovieListResponseSchema
 
 router = APIRouter()
 
 
-@router.get("/movies/", response_model=MoviePaginatedResponseSchema)
+@router.get("/movies/", response_model=MovieListResponseSchema)
 async def get_movies(
     request: Request,
     page: Annotated[
@@ -52,7 +52,7 @@ async def get_movies(
         else None
     )
 
-    if page < 1 or page > total_pages:
+    if page < 1:
         raise HTTPException(
             status_code=status.HTTP_422_UNPROCESSABLE,
             detail=[
@@ -73,9 +73,9 @@ async def get_movies(
     }
 
 
-@router.get("/movies/{id}/", response_model=MovieDetailResponseSchema)
-async def get_detail_movie(id: int, db: AsyncSession = Depends(get_db)):
-    stmt = select(MovieModel).where(MovieModel.id == id)
+@router.get("/movies/{movie_id}/", response_model=MovieDetailResponseSchema)
+async def get_detail_movie(movie_id: int, db: AsyncSession = Depends(get_db)):
+    stmt = select(MovieModel).where(MovieModel.id == movie_id)
     movie = await db.scalar(stmt)
     if not movie:
         raise HTTPException(
