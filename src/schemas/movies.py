@@ -30,10 +30,10 @@ class Movie(MovieListResponseSchema):
 
 
 class MoviePaginatedResponseSchema(BaseModel):
-  movies: list[MovieDetailResponseSchema]
-  prev_page: str | None
-  next_page: str | None
-  total_pages: int
-  total_items: int
+    movies: list[MovieDetailResponseSchema]
+    prev_page: str | None
+    next_page: str | None
+    total_pages: int
+    total_items: int
 
-  model_config = ConfigDict(from_attributes=True)
+    model_config = ConfigDict(from_attributes=True)
